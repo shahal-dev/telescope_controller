@@ -53,9 +53,16 @@ export default function Dashboard() {
   const isLoading = locationsLoading || telescopesLoading;
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-6">Telescope Locations</h1>
+    <div 
+      className="min-h-screen bg-cover bg-center bg-no-repeat relative"
+      style={{ backgroundImage: 'url(/background.jpg)' }}
+    >
+      {/* Background overlay for better text readability */}
+      <div className="absolute inset-0 bg-black/60"></div>
+      
+      <div className="container mx-auto px-4 py-8 relative z-10">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold mb-6 text-white drop-shadow-lg">Telescope Locations</h1>
         
         {isLoading ? (
           <div className="flex justify-center items-center h-64">
@@ -76,6 +83,7 @@ export default function Dashboard() {
             ))}
           </div>
         )}
+        </div>
       </div>
     </div>
   );
