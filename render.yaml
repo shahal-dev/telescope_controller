@@ -1,0 +1,26 @@
+# Render Blueprint — deploys the full app (React client + REST API + WebSocket
+# server) as a single persistent Node web service.
+#
+# Usage: push this repo to GitHub, then in Render: New + → Blueprint → pick this
+# repo. Render reads this file, creates the service, and prompts for the secret
+# env vars below (DATABASE_URL, SESSION_SECRET, WEATHER_API_KEY).
+services:
+  - type: web
+    name: telescope-controller
+    runtime: node
+    plan: free
+    # --include=dev is required: NODE_ENV=production (below) otherwise makes npm
+    # skip devDependencies, which include vite/esbuild needed for the build.
+    buildCommand: npm install --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/locations
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Secrets — Render will prompt you to enter these (not stored in the repo).
+      - key: DATABASE_URL
+        sync: false
+      - key: SESSION_SECRET
+        sync: false
+      - key: WEATHER_API_KEY
+        sync: false
