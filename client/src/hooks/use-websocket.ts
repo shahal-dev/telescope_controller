@@ -23,9 +23,11 @@ export function useWebSocket(telescopeId: number, onMessageReceived?: MessageHan
   useEffect(() => {
     // Create WebSocket connection
     const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-    const host = window.location.hostname;
-    const port = import.meta.env.VITE_WS_PORT || "5000";
-    const wsUrl = `${protocol}//${host}:${port}/ws`;
+    // Use the page's own host (incl. port) so this works in local dev and on a
+    // persistent host. On Vercel serverless there is no /ws endpoint, so the
+    // connection simply fails and the app keeps working without live updates.
+    const host = import.meta.env.VITE_WS_HOST || window.location.host;
+    const wsUrl = `${protocol}//${host}/ws`;
     
     const socket = new WebSocket(wsUrl);
     socketRef.current = socket;

@@ -163,6 +163,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
+  registerApiRoutes(app);
+
+  return httpServer;
+}
+
+// REST API routes — shared by the persistent server above (local/Render) and
+// the Vercel serverless function in api/index.ts. No WebSocket/http.Server here.
+export function registerApiRoutes(app: Express): void {
   // API Routes
   app.get('/api/locations', async (req: Request, res: Response) => {
     try {
@@ -538,6 +546,4 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: 'Authentication failed' });
     }
   });
-
-  return httpServer;
 }
